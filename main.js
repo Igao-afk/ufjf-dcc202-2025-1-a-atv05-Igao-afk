@@ -2,7 +2,7 @@ import { getTabuleiro, selecionaOuMove, getSelecionado } from "./discos.js";
 
 const eTabuleiro = document.getElementById("tabuleiro");
 
-// inicializa
+
 atualizaTabuleiro();
 
 function atualizaTabuleiro() {
@@ -14,20 +14,22 @@ function atualizaTabuleiro() {
         const casa = document.createElement("div");
         casa.classList.add("casa");
 
+        
+        casa.addEventListener("click", () => cliqueCasa(i));
+
         if (tabuleiro[i] !== null) {
             const disco = criaDisco(tabuleiro[i], i);
             if (selecionado === i) {
                 disco.classList.add("selecionado");
             }
             casa.append(disco);
-            disco.addEventListener("click", () => cliqueDisco(i));
         }
 
         eTabuleiro.append(casa);
     }
 }
 
-function cliqueDisco(posicao) {
+function cliqueCasa(posicao) {
     selecionaOuMove(posicao, atualizaTabuleiro);
 }
 
