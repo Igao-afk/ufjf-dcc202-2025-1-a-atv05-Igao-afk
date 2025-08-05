@@ -1,37 +1,46 @@
-const tabuleiro = ['branco', 'branco', 'branco', '', 'preto', 'preto', 'preto'];
-
+let tabuleiro = ['preto', 'preto', 'preto', null, 'branco', 'branco', 'branco'];
 let selecionado = null;
 
+export function getTabuleiro() {
+    return [...tabuleiro];
+}
+
 export function getSelecionado() {
-    if(selecionado === null || selecionado === posicao)
-        selecionado = posicao ;
-    else {
+    return selecionado;
+}
+
+
+export function selecionaOuMove(posicao, callbackAtualiza) {
+    if (selecionado === null) {
+        if (tabuleiro[posicao] !== null) {
+            selecionado = posicao;
+            callbackAtualiza();
+        }
+    } else {
         mover(selecionado, posicao);
         selecionado = null;
+        callbackAtualiza();
     }
 }
 
-export function getTabuleiro() {
-return [...tabuleiro];
-}    
 
 function mover(origem, destino) {
-    console.log("mover", origem, destino);
-    if (tabuleiro[origem] === '') return;
-    if (tabuleiro[destino] !== '') return;
-    if (Math.abs(destino - origem === 1)) {
+    if (tabuleiro[origem] === null) return;       
+    if (tabuleiro[destino] !== null) return;      
+
+   
+    if (Math.abs(destino - origem) === 1) {
         tabuleiro[destino] = tabuleiro[origem];
-        tabuleiro[origem] = '';
-    }
-    if (destino - origem === 2 && tabuleiro[origem+1] !== '') {
-                tabuleiro[destino] = tabuleiro[origem];
-                tabuleiro[origem] = '';
-            }
-            
-        
-        if(destino - origem === -2 && tabuleiro[origem-1] !== '') {
-                tabuleiro[destino] = tabuleiro[origem];
-                tabuleiro[origem] = '';
-            }
+        tabuleiro[origem] = null;
+        return;
     }
 
+    
+    if (Math.abs(destino - origem) === 2) {
+        const meio = (origem + destino) / 2;
+        if (tabuleiro[meio] !== null) {
+            tabuleiro[destino] = tabuleiro[origem];
+            tabuleiro[origem] = null;
+        }
+    }
+}
